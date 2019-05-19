@@ -1,0 +1,7 @@
+C:\SoftServe\EcoSystem\EcoSystem\obj\Debug\EcoSystem.csprojAssemblyReference.cache
+C:\SoftServe\EcoSystem\EcoSystem\obj\Debug\EcoSystem.csproj.CoreCompileInputs.cache
+C:\SoftServe\EcoSystem\EcoSystem\bin\Debug\EcoSystem.exe.config
+C:\SoftServe\EcoSystem\EcoSystem\bin\Debug\EcoSystem.exe
+C:\SoftServe\EcoSystem\EcoSystem\bin\Debug\EcoSystem.pdb
+C:\SoftServe\EcoSystem\EcoSystem\obj\Debug\EcoSystem.exe
+C:\SoftServe\EcoSystem\EcoSystem\obj\Debug\EcoSystem.pdb
