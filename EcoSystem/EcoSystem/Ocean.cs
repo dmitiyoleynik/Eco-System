@@ -10,11 +10,13 @@ namespace EcoSystem
     {
         Cell[,] _area;
         int _size;
+        int _day;
         int _row;
         int _column;
         int _fishNumber;
         int _sharksNumber;
         Random _random;
+
 
         public Ocean(int colum, int row)
         {
@@ -22,23 +24,24 @@ namespace EcoSystem
             _row = row;
             _size = _row * _column;
             _area = new Cell[_row, _column];
-            Random _random = new Random();//i should redo it
+            _random = new Random();
             SetCells();
         }
         public void SetCells()
         {
-            Random _random = new Random();
             for (int i = 0; i < _row - 1; i++)
             {
                 for (int j = 0; j < _column - 1; j++)
                 {
-                    switch (_random.Next(1, 20))//10->1
+                    switch (_random.Next(1, 50))
                     {
                         case 1:
                             _area[i, j] = new Fish(new Coordinate(i, j), Swop, MakeNewFish);
+                            _fishNumber++;
                             break;
                         case 2:
                             _area[i, j] = new Shark(new Coordinate(i, j), Swop, MakeNewFish, KillFish, isFood);
+                            _sharksNumber++;
                             break;
                         case 5:
                             _area[i, j] = new Block(new Coordinate(i, j));
@@ -50,19 +53,34 @@ namespace EcoSystem
                 }
             }
         }
+        public void DisplayHeader()
+        {
+            Console.WriteLine("┌───────────────────────┬───────────────────────┬───────────────────────┬───────────────────────┐");
+            Console.WriteLine("| Day : {0}\t\t| size : {1} \t\t| fishes :{2}\t\t| sharks : {3}\t\t|", _day, _size, _fishNumber, _sharksNumber);
+            Console.WriteLine("├───────────────────────┴───────────────────────┴───────────────────────┴───────────────────────┤");
+        }
         public void Display()
         {
+            DisplayHeader();
             for (int i = 0; i < _row - 1; i++)
             {
+                Console.Write('|');
+                Console.ForegroundColor = ConsoleColor.Blue;
                 for (int j = 0; j < _column - 1; j++)
                 {
                     _area[i, j].Display();
                 }
-                Console.WriteLine();
+                Console.ForegroundColor = ConsoleColor.White;
+                Console.WriteLine('|');
             }
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("└───────────────────────────────────────────────────────────────────────────────────────────────┘");
+            Console.ReadKey();
+
         }
-        public void Run()
+        public void PassDay()
         {
+            _day++;
             for (int i = 0; i < _row - 1; i++)
             {
                 for (int j = 0; j < _column - 1; j++)
@@ -77,6 +95,25 @@ namespace EcoSystem
                     }
                 }
             }
+            Console.Clear();
+            Display();
+        }
+        public void Run()
+        {
+            while (true)
+            {
+                PassDay();
+                System.Threading.Thread.Sleep(1000);
+                if (_fishNumber == 0)
+                {
+                    Console.WriteLine("Game is over, the sharks ate all the fishes!");
+                }
+                if (_sharksNumber == 0)
+                {
+                    Console.WriteLine("The ocean is free now, game is over!");
+                }
+            }
+
         }
         public void MakeNewFish(Coordinate pos, char type)
         {
@@ -84,20 +121,28 @@ namespace EcoSystem
                 pos._y >= 0 && pos._y < _column - 1 &&
                 !(_area[pos._x, pos._y] is Block))
             {
-
-
                 if (type == 'f')
                 {
                     _area[pos._x, pos._y] = new Fish(pos, Swop, MakeNewFish);
+                    _fishNumber++;
                 }
                 if (type == 'S')
                 {
+                    _sharksNumber++;
                     _area[pos._x, pos._y] = new Shark(pos, Swop, MakeNewFish, KillFish, isFood);
                 }
             }
         }
         public void KillFish(Coordinate pos)
         {
+            if (_area[pos._x, pos._y]._simbol == 'f')
+            {
+                _fishNumber--;
+            }
+            if (_area[pos._x, pos._y]._simbol == 'S')
+            {
+                _sharksNumber--;
+            }
             _area[pos._x, pos._y] = new Cell(pos);
         }
         public bool isFood(Coordinate pos)
@@ -117,7 +162,8 @@ namespace EcoSystem
         {
             if (whereItWantsToSwim._x >= 0 && whereItWantsToSwim._x < _row - 1 &&
                 whereItWantsToSwim._y >= 0 && whereItWantsToSwim._y < _column - 1 &&
-                !(_area[whereItWantsToSwim._x, whereItWantsToSwim._y] is Block))
+                !(_area[whereItWantsToSwim._x, whereItWantsToSwim._y] is Block) &&
+                !(_area[whereItWantsToSwim._x, whereItWantsToSwim._y] is Fish))
             {
                 Cell tmp;
                 tmp = _area[fishPosition._x, fishPosition._y];
