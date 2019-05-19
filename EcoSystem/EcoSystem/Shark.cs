@@ -8,9 +8,16 @@ namespace EcoSystem
 {
     class Shark:Fish
     {
-        public Shark(Coordinate pos, SwimDeleg d) : base(pos,d)
+        public int _timeToDie;
+        public int _livingTime;
+        public delegate void FishDeth(Coordinate pos);
+        public FishDeth Die;
+        public Shark(Coordinate pos, SwimDeleg d,MakeFish mkF,FishDeth fd,int liveTime=6) : base(pos,d,mkF)
         {
             SetCellSimbol('S');
+            _livingTime = liveTime;
+            _timeToDie = liveTime;
+            Die = fd;
         }
         virtual public void Move()
         {
@@ -32,7 +39,24 @@ namespace EcoSystem
                     break;
             }
 
-            _fishSwap(_position, newPosition);
+            if (_timeToDie == 0)
+            {
+                Die(_position); //kill it
+            }
+            else
+            {
+                _timeToDie--;
+                if (_currentTimeToREprouce == 0)
+                {
+                    _reproduce(newPosition, _simbol);
+                    _currentTimeToREprouce = _timeToReproduce;
+                }
+                else
+                {
+                    _fishSwap(_position, newPosition);
+                    _currentTimeToREprouce--;
+                }
+            }
         }
     }
 }

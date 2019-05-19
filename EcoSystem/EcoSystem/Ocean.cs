@@ -32,13 +32,13 @@ namespace EcoSystem
             {
                 for (int j = 0; j < _column - 1; j++)
                 {
-                    switch (_random.Next(1, 20))
+                    switch (_random.Next(1, 20))//10->1
                     {
                         case 1:
-                            _area[i, j] = new Fish(new Coordinate(i, j), Swop);
+                            _area[i, j] = new Fish(new Coordinate(i, j), Swop,MakeNewFish);
                             break;
                         case 2:
-                            _area[i, j] = new Shark(new Coordinate(i, j), Swop);
+                            _area[i, j] = new Shark(new Coordinate(i, j), Swop,MakeNewFish,KillFish);
                             break;
                         case 5:
                             _area[i, j] = new Block(new Coordinate(i, j));
@@ -75,6 +75,24 @@ namespace EcoSystem
                     {
                         ((Shark)_area[i, j]).Move();
                     }
+                }
+            }
+        }
+        public void MakeNewFish(Coordinate pos, char type)
+        {
+            if (pos._x >= 0 && pos._x < _row - 1 &&
+                pos._y >= 0 && pos._y < _column - 1 &&
+                !(_area[pos._x, pos._y] is Block))
+            {
+
+
+                if (type == 'f')
+                {
+                    _area[pos._x, pos._y] = new Fish(pos, Swop, MakeNewFish);
+                }
+                if (type == 'S')
+                {
+                    _area[pos._x, pos._y] = new Shark(pos, Swop, MakeNewFish,KillFish);
                 }
             }
         }

@@ -9,13 +9,20 @@ namespace EcoSystem
     class Fish : Cell
     {
         public delegate void SwimDeleg(Coordinate fishPosition, Coordinate whereItWantsToSwim);
+        public delegate void MakeFish(Coordinate pos,char type);
+        public MakeFish _reproduce;
         public SwimDeleg _fishSwap;
         public Random _random;
-        public Fish(Coordinate pos, SwimDeleg d) : base(pos)
+        public int _timeToReproduce;
+        public int _currentTimeToREprouce;
+        public Fish(Coordinate pos, SwimDeleg d,MakeFish rep,int reproduce=7) : base(pos)
         {
             SetCellSimbol('f');
             _fishSwap = d;
             _random = new Random();
+            _timeToReproduce = reproduce;
+            _currentTimeToREprouce = _timeToReproduce;
+            _reproduce = rep;
         }
         virtual public void Move()
         {
@@ -36,7 +43,17 @@ namespace EcoSystem
                     newPosition= new Coordinate(_position._x - 1, _position._y);
                     break;
             }
-            _fishSwap(_position,newPosition);
+            if (_currentTimeToREprouce == 0)
+            {
+                _reproduce(newPosition,_simbol);
+                _currentTimeToREprouce = _timeToReproduce;
+            }
+            else
+            {
+                _fishSwap(_position, newPosition);
+                _currentTimeToREprouce--;
+            }
+            
         }
     }
 }

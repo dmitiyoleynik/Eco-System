@@ -21,6 +21,7 @@ namespace EcoSystem
                 ok.Display();
                 Console.ReadKey();
                 ok.KillFish(new Coordinate(2, 2));
+               // ok.MakeNewFish('f', new Coordinate(4, 4));
             }
 
             //Console.WriteLine();
