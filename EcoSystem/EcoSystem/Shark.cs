@@ -6,18 +6,25 @@ using System.Threading.Tasks;
 
 namespace EcoSystem
 {
-    class Shark:Fish
+    class Shark : Fish
     {
         public int _timeToDie;
         public int _livingTime;
         public delegate void FishDeth(Coordinate pos);
+        public delegate bool isFood(Coordinate pos);
         public FishDeth Die;
-        public Shark(Coordinate pos, SwimDeleg d,MakeFish mkF,FishDeth fd,int liveTime=6) : base(pos,d,mkF)
+        public isFood canEat;
+        public Shark(Coordinate pos, SwimDeleg d, MakeFish mkF, FishDeth fd, isFood ifd, int liveTime = 12) : base(pos, d, mkF)
         {
             SetCellSimbol('S');
             _livingTime = liveTime;
             _timeToDie = liveTime;
             Die = fd;
+            canEat = ifd;
+        }
+        public void Eat()
+        {
+
         }
         virtual public void Move()
         {
@@ -38,10 +45,15 @@ namespace EcoSystem
                     newPosition = new Coordinate(_position._x - 1, _position._y);
                     break;
             }
+            if (canEat(newPosition))
+            {
+                Die(newPosition);
+                _timeToDie = _livingTime;
+            }
 
             if (_timeToDie == 0)
             {
-                Die(_position); //kill it
+                Die(_position); 
             }
             else
             {

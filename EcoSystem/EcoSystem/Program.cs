@@ -10,7 +10,7 @@ namespace EcoSystem
     {
         static void Main(string[] args)
         {
-            Ocean ok = new Ocean(30, 30);
+            Ocean ok = new Ocean(70, 20);
             ok.Display();
 
 
@@ -21,28 +21,9 @@ namespace EcoSystem
                 ok.Display();
                 Console.ReadKey();
                 ok.KillFish(new Coordinate(2, 2));
-               // ok.MakeNewFish('f', new Coordinate(4, 4));
+               
             }
 
-            //Console.WriteLine();
-
-            //for (int i = 0; i < 69; i++)
-            //{
-
-            //    ok.Swop(new Coordinate(3, i), new Coordinate(2, i));
-
-            //}
-            //ok.Display();
-
-            //Console.WriteLine();
-
-            //for (int i = 0; i < 69; i++)
-            //{
-
-            //    ok.Swop(new Coordinate(3, i), new Coordinate(2, i));
-
-            //}
-            //ok.Display();
         }
     }
 }

@@ -15,7 +15,7 @@ namespace EcoSystem
         public Random _random;
         public int _timeToReproduce;
         public int _currentTimeToREprouce;
-        public Fish(Coordinate pos, SwimDeleg d,MakeFish rep,int reproduce=7) : base(pos)
+        public Fish(Coordinate pos, SwimDeleg d,MakeFish rep,int reproduce=15) : base(pos)
         {
             SetCellSimbol('f');
             _fishSwap = d;
